@@ -1,7 +1,9 @@
 package com.nguyenvanquan7826.hello;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -66,6 +68,14 @@ public class MainActivity extends AppCompatActivity {
                 showInfoSchool(position);
             }
         });
+
+        lvSchool.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                deleteSchool(position);
+                return false;
+            }
+        });
     }
 
     private void addSchool() {
@@ -94,5 +104,19 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("address", s.getAddress());
 
         startActivity(i);
+    }
+
+    private void deleteSchool(final int position){
+        new AlertDialog.Builder(this)
+                .setTitle("Delete school")
+                .setMessage("Are you want delete school?")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        schoolDataList.remove(position);
+                        adapter.notifyDataSetChanged();
+                    }
+                }).setNegativeButton("Canncel", null)
+                .show();
     }
 }
